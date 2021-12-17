@@ -11,11 +11,10 @@ namespace Contoso.FunctionApp
 {
     public static class PolicyDocsFunction
     {
-        // ******************************************
-        // TODO #3: Insert code in this block to parameterize the function by defining the Route
+        // ******************************************        
         [FunctionName("PolicyDocs")]
         public static async Task<IActionResult> Run(
-                [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
+                [HttpTrigger(AuthorizationLevel.Function, "get",  Route = null)] HttpRequest req, string policyHolder, string policyNumber, ILogger log)
         // ******************************************
         {
             log.LogInformation($"PolicyDocs Function recieved a request for document '{policyHolder}-{policyNumber}.pdf'.");
@@ -29,11 +28,8 @@ namespace Contoso.FunctionApp
 
         private static async Task<byte[]> GetDocumentFromStorage(string policyHolder, string policyNumber)
         {
-            // ******************************************
-            // TODO #4: Insert code in this block to enable the Function App to retrieve configuration values from Appplication Settings.
-            var containerUri = // Retrieve the PolicyStorageUrl Environment variable 
-            var sasToken = // Retrieve the PolicyStorageSas Environment variable 
-            // ******************************************
+            var containerUri = Environment.GetEnvironmentVariable("PolicyStorageUrl");
+            var sasToken = Environment.GetEnvironmentVariable("PolicyStorageSas");
 
             var uri = $"{containerUri}/{policyHolder}-{policyNumber}.pdf{sasToken}";
 
